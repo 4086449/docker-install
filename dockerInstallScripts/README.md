@@ -40,12 +40,12 @@ Portainer is available @ 'http://<ip_address_pi>:9000/'
 Create Admin user 
 Choose local environment like 
 
-<img src="lib/PortainerEnvironment.png"" width="50%" >
+![PortainerEnvironment](../lib/PortainerEnvironment.png)
 
 Once done, you're in the home screen. 
 Press local to enter the environment and start deploying containers.
                                                     
-<img src="lib/PortainerHome.png"" width="50%" >
+![PortainerHome](../lib/PortainerHome.png)
 
 ## Static IP
 Just a reminder to set a static ip
