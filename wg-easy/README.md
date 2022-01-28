@@ -2,9 +2,16 @@
 Super easy to use VPN server in a docker container
 
 ## Clients
-Full list can be found [here](https://www.wireguard.com/install/): https://www.wireguard.com/install/
+Full list can be found [here](https://www.wireguard.com/install/): 
+
+https://www.wireguard.com/install/
+
+Clients:
+
 [Macos (app store)](https://itunes.apple.com/us/app/wireguard/id1451685025?ls=1&mt=12)
+
 [iOS (app store)](https://itunes.apple.com/us/app/wireguard/id1441195209?ls=1&mt=8)
+
 [Windows Installer](https://download.wireguard.com/windows-client/wireguard-installer.exe)
 
 ## Before deployment
