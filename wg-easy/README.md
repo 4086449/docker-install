@@ -55,7 +55,7 @@ http://192.168.178.20:9000
 ```
 Press 'local' 
 
-![PortainerEnvironment](../lib/PortainerEnvironment.png)
+![PortainerHome](../lib/PortainerHome.png)
 
 In the right taskbar, press:
 
