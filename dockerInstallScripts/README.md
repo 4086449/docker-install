@@ -17,6 +17,7 @@ sudo chmod +x installPortainer.sh
 
 ### Install Docker
 When asked, press 'y' 
+
 _ignore warnings during install. All will be well after a reboot. This happens automatically at the end of the installDocker.sh script_
 
 ```bash
@@ -25,6 +26,7 @@ _ignore warnings during install. All will be well after a reboot. This happens a
 
 ### Install docker-compose & portainer
 When asked, press 'y' 
+
 _ignore warnings during install. All will be well after a reboot. This happens automatically at the end of the installDocker.sh script_
 
 ```bash
@@ -37,21 +39,27 @@ Portainer is available @ 'http://<ip_address_pi>:9000/'
 
 Create Admin user 
 Choose local environment like 
+
 <img src="lib/PortainerEnvironment.png"" width="50%" >
 
 Once done, you're in the home screen. 
 Press local to enter the environment and start deploying containers.
+                                                    
 <img src="lib/PortainerHome.png"" width="50%" >
 
 ## Static IP
 Just a reminder to set a static ip
+
 _edit file_
 ```bash
 sudo nano /etc/dhcpcd.conf
 ```
 Choose an ip address like '192.168.178.20'
+
 Replace ip after 'static ip_address=' and copy/paste the whole section at the end of the dhcpcd.conf file
+
 if you are __NOT__ using wifi, change 'wlan0' to 'eth0'
+
 ```bash
 interface wlan0
 static ip_address=192.168.178.20/24
