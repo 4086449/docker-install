@@ -34,7 +34,7 @@ For Ziggo: http://192.168.178.1/
 
 Go to Advanced Settings -> Security -> Port Forwarding
 
-![ZiggoWelcome](../lib/ZiggoPortForward.png)
+![ZiggoWelcome](../lib/ZiggoWelcome.png)
 
 Press 
 > Create New Rule
@@ -49,6 +49,7 @@ Choose "UDP" protocol
 And set to enabled 
 
 > Add Rule
+
 > Apply Changes
 
 ![ZiggoPortForward](../lib/ZiggoPortForward.png)
@@ -67,6 +68,7 @@ Press 'local'
 In the right taskbar, press:
 
 > stacks
+
 > new stack
 
 Enter name 'wireguardvpn' _(no capitols or characters)_
