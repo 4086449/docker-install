@@ -22,38 +22,55 @@ __don't forget to update the created subdomain in de docker-compose.yml file__
 
 ### Port Forwarding
 Go to your router's home page
+
 For Ziggo: http://192.168.178.1/
 
 Go to Advanced Settings -> Security -> Port Forwarding
-<img src="lib/ZiggoWelcome.png" width="50%" >
 
-Press "Create New Rule"
-Add your IP '192.168.178.20'
+![ZiggoWelcome](../lib/ZiggoPortForward.png)
+
+Press 
+> Create New Rule
+
+Add your IP 
+> 192.168.178.20
+
 Enter port "51820" 4 times
+
 Choose "UDP" protocol
+
 And set to enabled 
-'Add Rule'
-'Apply Changes'
-<img src="lib/ZiggoPortForward.png" width="50%" >
+
+> Add Rule
+> Apply Changes
+
+![ZiggoPortForward](../lib/ZiggoPortForward.png)
+
 
 ## Deploying Container
 Browse to your pi's IP on port '9000' to go to portainer 'http://<ip_address_pi>:9000'
+
 ```
 http://192.168.178.20:9000
 ```
 Press 'local' 
-<img src="lib/PortainerEnvironment.png" width="50%" >
+
+![PortainerEnvironment](../lib/PortainerEnvironment.png)
 
 In the right taskbar, press:
+
 > stacks
 > new stack
+
 Enter name 'wireguardvpn' _(no capitols or characters)_
+
 Copy/paste docker-compose.yml
 > deploy stack
 
 This could take a minute. A green (or red) notification will appear in the right upper corner of the screen when it is finished.
 
 If it was green, all went well.
+
 To access the wireguard admin page, go to 'http://<ip_address_pi>:51821'
 ```
 http://192.168.178.20:51821 
