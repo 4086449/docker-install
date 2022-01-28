@@ -1,0 +1,29 @@
+version: "2"
+
+services:
+  mqtt:
+    image: eclipse-mosquitto
+    ports:
+      - "1883:1883"
+    networks:
+      - node-red-net
+    volumes:
+      - "/home/pi/.docker/node-red/mosquitto:/mosquitto"
+    restart: unless-stopped
+
+  node-red:
+    image: nodered/node-red:latest
+    environment:
+      - TZ=Europe/Amsterdam
+    ports:
+      - "1880:1880"
+    networks:
+      - node-red-net
+    volumes:
+      - "/home/pi/.docker/node-red:/data"
+    depends_on:
+      - mqtt
+    restart: unless-stopped
+
+networks:
+  node-red-net:
