@@ -3,12 +3,6 @@ This repo contains an install script for docker and for portainer.
 
 ## Installation
 
-### Download repo
-```bash
-cd ~/
-git clone 
-```
-
 ### Make install scripts executable
 ```bash
 sudo chmod +x installDocker.sh
