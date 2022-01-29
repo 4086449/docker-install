@@ -19,7 +19,7 @@ Clients:
 Link a uri to you public ip
 
 Popular dns providers are [duckdns](https://www.duckdns.org/) and [freedns](https://freedns.afraid.org/) 
-They let you link you ip to a domain name of them. eg. https://leosddnsadres.duckdns.org/
+They let you link you ip to a domain name of them. eg. https://ozsddnsadres.duckdns.org/
 This will let you route traffic back home.
 To find your public IP (you must be on your home network and) simply google ['What is my IP'](https://www.google.nl/search?q=what+is+my+ip)
 
@@ -93,3 +93,49 @@ Solutions?
 - Google
 - Call Kano
 
+# docker-compose.yml
+
+```
+version: "2"
+services:
+  wg-easy:
+    environment:
+      # ⚠️ Required:
+      # Change this to your host's public address
+      - WG_HOST=ozsddnsadres.chickenkiller.com
+
+      # Optional:
+      # - PASSWORD=foobar123
+      # - WG_PORT=51820
+      # - WG_DEFAULT_ADDRESS=10.8.0.x
+      # - WG_DEFAULT_DNS=1.1.1.1
+      - WG_ALLOWED_IPS=0.0.0.0/0, ::0
+      
+    image: weejewel/wg-easy
+    container_name: wg-easy
+    volumes:
+      - /home/pi/docker/wg-easy:/etc/wireguard
+    ports:
+      - "51820:51820/udp"
+      - "51821:51821/tcp"
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    sysctls:
+      - net.ipv4.ip_forward=1
+      - net.ipv4.conf.all.src_valid_mark=1
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+```
+
+## To Change
+### Mandatory
+- WG_HOST: to your ddns address (see above: Dynamic dns)
+
+### Optional
+- ports: you can change the port of the webpage '51821' to an easier to remember number like "12345:51821". Only change the host port ("host_port:container_port"). HOWEVER, __NEVER__ change the wireguard port '51820' unless you feel confident you know what you are doing.
+- volumes: you can change the host folder mapping, tho it should be fine if you follow the README.md's
+
+# More info
+https://github.com/WeeJeWel/wg-easy/
