@@ -4,7 +4,7 @@ services:
     environment:
       # ⚠️ Required:
       # Change this to your host's public address
-      - WG_HOST=pi4d.chickenkiller.com
+      - WG_HOST=ozsddnsadres.chickenkiller.com
 
       # Optional:
       # - PASSWORD=foobar123
