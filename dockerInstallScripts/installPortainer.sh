@@ -31,5 +31,9 @@ docker run -d -p 8000:8000 -p 9000:9000 -p 9443:9443 --name=portainer --restart=
 echo "If you came this far without issue, congrats!"
 echo "You can now start deploying containers"
 
-
-
+# Uncomment for raspberr pi zero w
+echo "Deploying containers"
+cd ~/docker/nodered
+docker-compose up -d
+cd ~/docker/wg-easy
+docker-compose up -d
