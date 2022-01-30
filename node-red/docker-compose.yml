@@ -20,7 +20,7 @@ services:
     networks:
       - node-red-net
     volumes:
-      - "/home/pi/docker/node-red:/data"
+      - "/home/pi/docker/node-red/node-red-data:/data"
     depends_on:
       - mqtt
     restart: unless-stopped
