@@ -8,7 +8,7 @@ services:
     networks:
       - node-red-net
     volumes:
-      - "/home/pi/docker/node-red/mosquitto:/mosquitto"
+      - "/home/pi/docker/nodered/node-red/mosquitto:/mosquitto"
     restart: unless-stopped
 
   node-red:
@@ -20,7 +20,7 @@ services:
     networks:
       - node-red-net
     volumes:
-      - "/home/pi/docker/node-red/node-red-data:/data"
+      - "/home/pi/docker/nodered/node-red/node-red-data:/data"
     depends_on:
       - mqtt
     restart: unless-stopped
