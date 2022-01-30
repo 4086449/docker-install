@@ -4,6 +4,7 @@ It also contains the folders and docker-compose.yml files for wireguard VPN and 
 
 ### Download repo
 ```bash
+sudo apt-get install -y git
 cd ~/
 git clone https://github.com/4086449/docker.git
 ```
