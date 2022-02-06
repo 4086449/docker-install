@@ -55,7 +55,7 @@ And set to enabled
 ![ZiggoPortForward](../lib/ZiggoPortForward.png)
 
 
-## Deploying Container
+## Deploying Container with portainer
 Browse to your pi's IP on port '9000' to go to portainer 'http://<ip_address_pi>:9000'
 
 ```
@@ -94,8 +94,14 @@ Solutions?
 - Call Kano
 
 # docker-compose.yml
+## Deploy with docker-compose
+### To start / stop
+```
+docker-compose up -d
+docker-compose down
 
 ```
+> -d for detached. Curious? Try without
 version: "2"
 services:
   wg-easy:
