@@ -26,7 +26,7 @@ Solutions?
 
 ## With docker-compose
 ### to start
-always go the the folder that contains your 'docker-compose.yml' file. __NEVER__ change this name
+__Always__ go the the folder that contains your 'docker-compose.yml' file. __NEVER__ change this name
 ```bash
 cd ~/docker/node-red
 docker-compose up -d
