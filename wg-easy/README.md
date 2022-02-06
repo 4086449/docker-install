@@ -101,7 +101,7 @@ __Always__ go the the folder that contains your 'docker-compose.yml' file. __NEV
 docker-compose up -d
 docker-compose down
 ```
-> -d for detached. Curious? Try without
+> -d for detached. Curious? Try without (stop -> ctrl + c) 
 
 ```
 version: "2"
