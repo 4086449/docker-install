@@ -96,6 +96,7 @@ Solutions?
 # docker-compose.yml
 ## Deploy with docker-compose
 ### To start / stop
+__Always__ go the the folder that contains your 'docker-compose.yml' file. __NEVER__ change this name
 ```
 docker-compose up -d
 docker-compose down
