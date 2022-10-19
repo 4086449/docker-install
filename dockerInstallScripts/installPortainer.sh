@@ -27,13 +27,14 @@ echo "Deploying portainer"
 docker volume create portainer_data
 docker pull portainer/portainer-ce:latest
 docker run -d -p 8000:8000 -p 9000:9000 -p 9443:9443 --name=portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce:latest
+#docker run -d -p 8000:8000 -p 9000:9000 -p 9443:9443 --name=portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v /home/pi/portainer/data:/data portainer/portainer-ce:latest
 
 echo "If you came this far without issue, congrats!"
 echo "You can now start deploying containers"
 
 # Uncomment for raspberr pi zero w
-echo "Deploying containers"
-cd ~/docker/nodered
-docker-compose up -d
-cd ~/docker/wg-easy
-docker-compose up -d
+#echo "Deploying containers"
+#cd ~/docker/nodered
+#docker-compose up -d
+#cd ~/docker/wg-easy
+#docker-compose up -d
