@@ -25,8 +25,13 @@ Solutions?
 - Call Kano
 
 ## With docker-compose
-
+### to start
+__Always__ go the the folder that contains your 'docker-compose.yml' file. __NEVER__ change the name 'docker-compose.yml'
 ```bash
 cd ~/docker/node-red
 docker-compose up -d
+```
+### to stop
+```bash
+docker-compose down
 ```

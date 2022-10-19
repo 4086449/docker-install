@@ -5,6 +5,7 @@ This repo contains an install script for docker and for portainer.
 
 ### Make install scripts executable
 ```bash
+cd ~/docker/dockerInstallScripts/
 sudo chmod +x installDocker.sh
 sudo chmod +x installPortainer.sh
 ```

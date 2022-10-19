@@ -55,7 +55,7 @@ And set to enabled
 ![ZiggoPortForward](../lib/ZiggoPortForward.png)
 
 
-## Deploying Container
+## Deploying Container with portainer
 Browse to your pi's IP on port '9000' to go to portainer 'http://<ip_address_pi>:9000'
 
 ```
@@ -94,6 +94,14 @@ Solutions?
 - Call Kano
 
 # docker-compose.yml
+## Deploy with docker-compose
+### To start / stop
+__Always__ go the the folder that contains your 'docker-compose.yml' file. __NEVER__ change the name 'docker-compose.yml'
+```
+docker-compose up -d
+docker-compose down
+```
+> -d for detached. Curious? Try without (stop -> ctrl + c) 
 
 ```
 version: "2"
