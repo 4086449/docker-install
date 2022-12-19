@@ -17,7 +17,11 @@ echo "Install docker-compose & dependencies"
 sudo apt-get install -y libffi-dev libssl-dev
 sudo apt install -y python3-dev
 sudo apt-get install -y python3 python3-pip
-sudo pip3 install docker-compose
+
+## Uncomment pip3 for 64bit (pi4) 
+## Uncomment apt-get for 32bit (pi3/pizero)
+# sudo pip3 install docker-compose
+sudo apt-get install -y docker-compose
 
 echo "Check if docker is up and running by returning the version"
 docker version
