@@ -12,7 +12,7 @@ Manually install docker and/or docker compose + portainer
 ```bash
 sudo apt-get install -y git
 cd ~/
-git clone https://github.com/4086449/docker.git
+git clone https://github.com/4086449/docker-install.git
 cd docker-install/
 ```
 
