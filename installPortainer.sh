@@ -1,44 +1,54 @@
 #!/usr/bin/bash
 
+### Stop on error
 set -e
 
-echo "Starting script to install docker & docker-compose"
+### Load environment file
+source .env
+
+### Start script
+echo "- Starting script to install docker-compose and portainer -"
 
 echo "Checking if user pi is in group docker"
-username=pi
+username=$USER
 if getent group docker | grep -q "\b${username}\b"; then
-    echo true
+    echo "- True - "
 else
-    echo false
-	exit
+    echo "- False - "
+    echo "User is not in group docker. Please add user to group docker and re-run the script"
+    echo -e "To add the current user to group docker, run the following command: \n\nsudo usermod -aG docker \$USER \n\n"
+	exit 1
 fi
 
 echo "Install docker-compose & dependencies"
-sudo apt-get install -y libffi-dev libssl-dev
-sudo apt install -y python3-dev
-sudo apt-get install -y python3 python3-pip
 
-## Uncomment pip3 for 64bit (pi4) 
-## Uncomment apt-get for 32bit (pi3/pizero)
-# sudo pip3 install docker-compose
-sudo apt-get install -y docker-compose
+### Install dependencies
+sudo apt install -y libffi-dev libssl-dev python3 python3-pip python3-dev
+
+### Install docker-compose
+sudo apt install -y docker-compose
+
+### If apt install docker-compose fails, use pip to install docker-compose
+# sudo python3 -m pip install docker-compose
 
 echo "Check if docker is up and running by returning the version"
 docker version
 docker ps
 
+##############################################################
+# Uncomment for persistent / non-persistent portainer volume #
+##############################################################
 echo "Deploying portainer"
-docker volume create portainer_data
-docker pull portainer/portainer-ce:latest
-docker run -d -p 8000:8000 -p 9000:9000 -p 9443:9443 --name=portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce:latest
-#docker run -d -p 8000:8000 -p 9000:9000 -p 9443:9443 --name=portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v /home/pi/portainer/data:/data portainer/portainer-ce:latest
+docker pull $DOCKER_IMAGE
+
+### non-persistent container
+# docker volume create portainer_data
+# docker run -d -p 8000:8000 -p 9000:9000 -p 9443:9443 --name=portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce:latest
+
+### persistent container
+mkdir -p $PORTAINER_FOLDER/data
+docker run -d -p 8000:8000 -p 9000:9000 -p 9443:9443 --name=portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v $PORTAINER_FOLDER/data:/data $DOCKER_IMAGE
 
 echo "If you came this far without issue, congrats!"
 echo "You can now start deploying containers"
-
-# Uncomment for raspberr pi zero w
-#echo "Deploying containers"
-#cd ~/docker/nodered
-#docker-compose up -d
-#cd ~/docker/wg-easy
-#docker-compose up -d
+echo '- Done -'
