@@ -1,5 +1,22 @@
 #!/bin/bash
 
+#########################################################################################################################
+#                                                                                                                       #
+#                                                   QUICKSTART                                                          #
+#                                                                                                                       #
+#########################################################################################################################
+#                                                                                                                       #
+#   git clone https://github.com/4086449/docker-install.git                                                             #
+#   cd docker-install                                                                                                   #              
+#   git checkout dev                                                                                                    #              
+#   ./install.sh                                                                                                        #
+#                                                                                                                       #
+#   OR                                                                                                                  #
+#                                                                                                                       #
+#   git clone https://github.com/4086449/docker-install.git && cd docker-install && git checkout dev && ./install.sh    #
+#                                                                                                                       #
+#########################################################################################################################
+
 LOGFOLDER=./logs
 LOGFILE=./$LOGFOLDER/install.log
 
