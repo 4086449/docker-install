@@ -6,11 +6,12 @@ LOGFILE=./$LOGFOLDER/updatePortainer.log
 PORTAINER_FOLDER=/home/$USERNAME/portainer
 PORTAINER_IMAGE=portainer/portainer-ce:latest
 PORTAINER_AGENT_IMAGE=portainer/agent:latest
+PERSISTANT=true
 
 function main() {
     ### Start script
     echo -e "\n-----------------------\n"
-    echo -e "\n- Starting script to install and portainer -"
+    echo -e "\n- Starting script to update portainer -"
     loadEnv
     pi-upgrade
     updateImages
@@ -128,8 +129,11 @@ function deployNewPortainerImage() {
     echo -e "\n- Removing container -"
     docker rm portainer
     echo -e "\n- Spinning up container -"
-    # docker run -d -p 8000:8000 -p 9000:9000 -p 9443:9443 --name=portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce:latest
-    docker run -d -p 8000:8000 -p 9000:9000 -p 9443:9443 --name=portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v $PORTAINER_FOLDER/data:/data $PORTAINER_IMAGE
+    if [[ "$PERSISTANT" == true ]]; then
+        docker run -d -p 8000:8000 -p 9000:9000 -p 9443:9443 --name=portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v $PORTAINER_FOLDER/data:/data $PORTAINER_IMAGE
+    else
+        docker run -d -p 8000:8000 -p 9000:9000 -p 9443:9443 --name=portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data $PORTAINER_IMAGE
+    fi
 }
 
 function deployNewPortainerAgentImage() {
