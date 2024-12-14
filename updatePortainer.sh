@@ -75,7 +75,7 @@ function validateSHA() {
 
 function pullPortainerImage() {
     echo -e "\n- Checking for new Portainer image -"
-    current_digest=$(docker inspect --format='json' "$PORTAINER_IMAGE" | jq -r '.[0].Image' | cut -d':' -f2)
+    current_digest=$(docker inspect --format='json' "portainer" | jq -r '.[0].Image' | cut -d':' -f2)
     echo -e "\n- Current version: $current_digest -"
     if ! validateSHA "$current_digest"; then
         echo -e "\n- Invalid SHA for current image $PORTAINER_IMAGE -"
@@ -99,8 +99,8 @@ function pullPortainerImage() {
 }
 
 function pullPortainerAgentImage() {
-    echo -e "\n- Checking for new Portainer image -"
-    current_digest=$(docker inspect --format='json' "$PORTAINER_AGENT_IMAGE" | jq -r '.[0].Image')
+    echo -e "\n- Checking for new Portainer Agent image -"
+    current_digest=$(docker inspect --format='json' "portainer_agent" | jq -r '.[0].Image')
     if ! validateSHA "$current_digest"; then
         echo -e "\n- Invalid SHA for current image $PORTAINER_AGENT_IMAGE -"
         return 1
@@ -114,7 +114,7 @@ function pullPortainerAgentImage() {
     echo -e "\n- Latest version: $latest_digest -"
 
     if [ "$current_digest" != "$latest_digest" ]; then
-        echo -e "\n- New image available, pulling new Portainer image -"
+        echo -e "\n- New image available, pulling new Portainer Agent image -"
         docker pull "$PORTAINER_AGENT_IMAGE"
         return 0
     else
