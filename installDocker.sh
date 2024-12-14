@@ -1,44 +1,59 @@
 #!/usr/bin/bash
 
-# Stop on error
-set -e
+USERNAME=pi
+LOGFOLDER=./logs
+LOGFILE=./$LOGFOLDER/installDocker.log
 
-### Start script
-echo '- Starting script to install docker -'
+function main() {
+    ### Start script
+    echo -e '\n-----------------------\n'
+    echo -e '\n- Starting script to install docker -'
+    loadEnv
+    pi-upgrade
+    installDocker
+    echo -e '\n- Done -\n'
+    exit 0
+}
 
-echo "Update and upgrade" 
-sudo apt-get update && sudo apt-get upgrade -y
+function loadEnv() {
+    echo -e "\n- Loading environment -"
+    # Stop on error
+    set -e
+    ### Logfile
+    mkdir -p $LOGFOLDER
+    exec > >(tee -a $LOGFILE) 2>&1
 
-echo "Install dependencies"
-sudo apt-get install apt-transport-https ca-certificates curl gnupg-agent software-properties-common -y
+    ### Load environment file
+    if [ ! -f .env ]; then
+        touch .env
+        echo -e "\n- Created .env file -"
+    fi
 
-echo "Download script from 'https://get.docker.com' for adding the docker repo's and keys and stuff"
-curl -sSL https://get.docker.com | sh
+    source .env
+}
 
-echo "Update again and install docker agent and dependencies from newly added docker repo"
-sudo apt-get update
-sudo apt-get install docker-ce docker-ce-cli containerd.io
+function pi-upgrade() {
+    echo -e "\n- pi-upgrade -"
+    sudo apt update && sudo apt full-upgrade -y && sudo apt dist-upgrade -y && sudo apt autoremove -y
+}
 
-echo "Start docker and enable automatic start at boot as a service"
-sudo systemctl start docker && sudo systemctl enable docker
+function installDocker() { 
+    echo -e "\n- Install dependencies -"
+    sudo apt install apt-transport-https ca-certificates curl gnupg-agent software-properties-common -y
 
-echo "Add new group to user"
-sudo usermod -aG docker $USER
-sudo su - $USER
+    echo -e "\n- Download script from 'https://get.docker.com' for adding the docker repo's and keys and stuff -"
+    curl -sSL https://get.docker.com | sh
 
-echo "Checking if current user is in group docker"
-username=$USER
-if getent group docker | grep -q "\b${username}\b"; then
-    echo "- True - "
-    echo "Finished installing docker"
-else
-    echo "- False - "
-    echo "Something went wrong. To fix this, your device will reboot now."
-    echo -e "\n\n\nIF YOU SEE THIS MESSAGE AFTER RUNNING install.sh, PLEASE RE-RUN THE SCRIPT \n\n\n"
-    echo "Finishing and rebooting"
+    echo -e "\n- Update again and install docker agent and dependencies from newly added docker repo -"
+    sudo apt update
+    sudo apt install docker-ce docker-ce-cli containerd.io
+    mkdir /home/$USERNAME/.docker
 
-	sudo reboot 0
-fi
+    echo -e "\n- Start docker and enable automatic start at boot as a service -"
+    sudo systemctl start docker && sudo systemctl enable docker
 
-echo '- Done -'
-exit
+    echo -e "\n- Add new group to user -"
+    sudo usermod -aG docker $USERNAME
+}
+
+main
