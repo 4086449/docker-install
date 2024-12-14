@@ -61,7 +61,7 @@ function setNewPortainerPassword() {
             new_password="new_password"
             retype_password="retype_password"
             attempt=0
-            while [ "$new_password" != "$retype_password" ] && [ $attempt -lt 3 ]; do
+            while [ "$new_password" != "$retype_password" ] && [ $attempt -lt 3 ] && [ "$new_password" != "portainer" ]; do
                 read -s -p "Enter new password: " new_password
                 echo
                 read -s -p "Retype new password: " retype_password
