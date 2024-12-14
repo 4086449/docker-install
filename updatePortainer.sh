@@ -13,10 +13,10 @@ function main() {
     echo -e "\n-----------------------\n"
     echo -e "\n- Starting script to update portainer -"
     loadEnv
+    echo -e "\n- argument passed: $1 -"
     if [[ -z "$1" || "$1" != "--skip-upgrade" ]]; then
         pi-upgrade
     fi
-    pi-upgrade
     updateImages
     echo -e "\n- Done -\n"
     exit 0
@@ -165,4 +165,4 @@ function updateImages() {
     fi
 }
 
-main
+main "$@"
