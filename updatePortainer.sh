@@ -78,7 +78,7 @@ function validateSHA() {
 
 function pullPortainerImage() {
     echo -e "\n- Checking for new Portainer image -"
-    current_digest=$(docker inspect --format='json' "portainer" | jq -r '.[0].Image' | cut -d':' -f2)
+    current_digest=$(docker inspect --format='json' "portainer" | jq -r '.[0].Image')
     echo -e "\n- Current version: $current_digest -"
     if ! validateSHA "$current_digest"; then
         echo -e "\n- Invalid SHA for current image $PORTAINER_IMAGE -"
@@ -141,9 +141,9 @@ function deployNewPortainerImage() {
 
 function deployNewPortainerAgentImage() {
     echo -e "\n- Stopping container -"
-    docker stop portainer
+    docker stop portainer_agent
     echo -e "\n- Removing container -"
-    docker rm portainer
+    docker rm portainer_agent
     echo -e "\n- Spinning up container -"
     docker run -d -p 9001:9001 --name portainer_agent --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v /var/lib/docker/volumes:/var/lib/docker/volumes $PORTAINER_AGENT_IMAGE
 }
