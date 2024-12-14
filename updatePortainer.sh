@@ -75,13 +75,13 @@ function validateSHA() {
 function pullPortainerImage() {
     echo -e "\n- Checking for new Portainer image -"
     current_digest=$(docker inspect --format='json' "$PORTAINER_IMAGE" | jq -r '.[0].Image' | cut -d':' -f2)
-    if !validateSHA(current_digest); then
+    if ! validateSHA "$current_digest"; then
         echo -e "\n- Invalid SHA for current image $PORTAINER_AGENT_IMAGE -"
         return false
     fi
     echo -e "\n- Current version: $current_digest -"
     latest_digest=$(curl -s https://hub.docker.com/v2/repositories/portainer/portainer-ce/tags/latest | jq -r '.images[] | select(.architecture == "arm64") | .digest')
-    if !validateSHA(latest_digest); then
+    if ! validateSHA "$latest_digest"; then
         echo -e "\n- Invalid SHA for latest image $PORTAINER_AGENT_IMAGE -"
         return false
     fi
@@ -100,13 +100,13 @@ function pullPortainerImage() {
 function pullPortainerAgentImage() {
     echo -e "\n- Checking for new Portainer image -"
     current_digest=$(docker inspect --format='json' "$PORTAINER_AGENT_IMAGE" | jq -r '.[0].Image')
-    if !validateSHA(current_digest); then
+    if ! validateSHA "$current_digest"; then
         echo -e "\n- Invalid SHA for current image $PORTAINER_AGENT_IMAGE -"
         return false
     fi
     echo -e "\n- Current version: $current_digest -"
     latest_digest=$(curl -s https://hub.docker.com/v2/repositories/portainer/agent/tags/latest | jq -r '.images[] | select(.architecture == "arm64") | .digest')
-    if !validateSHA(latest_digest); then
+    if ! validateSHA "$latest_digest"; then
         echo -e "\n- Invalid SHA for latest image $PORTAINER_AGENT_IMAGE -"
         return false
     fi
