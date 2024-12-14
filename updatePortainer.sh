@@ -76,17 +76,17 @@ function validateSHA() {
 function pullPortainerImage() {
     echo -e "\n- Checking for new Portainer image -"
     current_digest=$(docker inspect --format='json' "$PORTAINER_IMAGE" | jq -r '.[0].Image' | cut -d':' -f2)
-    if ! validateSHA "$current_digest"; then
-        echo -e "\n- Invalid SHA for current image $PORTAINER_AGENT_IMAGE -"
-        return 1
-    fi
     echo -e "\n- Current version: $current_digest -"
-    latest_digest=$(curl -s https://hub.docker.com/v2/repositories/portainer/portainer-ce/tags/latest | jq -r '.images[] | select(.architecture == "arm64") | .digest')
-    if ! validateSHA "$latest_digest"; then
-        echo -e "\n- Invalid SHA for latest image $PORTAINER_AGENT_IMAGE -"
+    if ! validateSHA "$current_digest"; then
+        echo -e "\n- Invalid SHA for current image $PORTAINER_IMAGE -"
         return 1
     fi
+    latest_digest=$(curl -s https://hub.docker.com/v2/repositories/portainer/portainer-ce/tags/latest | jq -r '.images[] | select(.architecture == "arm64") | .digest')
     echo -e "\n- Latest version: $latest_digest -"
+    if ! validateSHA "$latest_digest"; then
+        echo -e "\n- Invalid SHA for latest image $PORTAINER_IMAGE -"
+        return 1
+    fi
 
     if [ "$current_digest" != "$latest_digest" ]; then
         echo -e "\n- New image available, pulling new Portainer image -"
