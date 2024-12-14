@@ -61,11 +61,30 @@ function checkForPortainerAgent() {
     fi
 }
 
+function validateSHA() {
+    if [ -z "$1" ]; then
+        return false
+    fi
+    if [[ "$1" =~ ^sha256:[a-f0-9]{64}$ ]]; then
+        return true
+    else
+        return false
+    fi
+}
+
 function pullPortainerImage() {
     echo -e "\n- Checking for new Portainer image -"
-    current_digest=$(docker inspect --format='{{index .RepoDigests 0}}' "$PORTAINER_IMAGE" | cut -d'@' -f2)
+    current_digest=$(docker inspect --format='json' "$PORTAINER_IMAGE" | jq -r '.[0].Image' | cut -d':' -f2)
+    if !validateSHA(current_digest); then
+        echo -e "\n- Invalid SHA for current image $PORTAINER_AGENT_IMAGE -"
+        return false
+    fi
     echo -e "\n- Current version: $current_digest -"
     latest_digest=$(curl -s https://hub.docker.com/v2/repositories/portainer/portainer-ce/tags/latest | jq -r '.images[] | select(.architecture == "arm64") | .digest')
+    if !validateSHA(latest_digest); then
+        echo -e "\n- Invalid SHA for latest image $PORTAINER_AGENT_IMAGE -"
+        return false
+    fi
     echo -e "\n- Latest version: $latest_digest -"
 
     if [ "$current_digest" != "$latest_digest" ]; then
@@ -80,9 +99,17 @@ function pullPortainerImage() {
 
 function pullPortainerAgentImage() {
     echo -e "\n- Checking for new Portainer image -"
-    current_digest=$(docker inspect --format='{{index .RepoDigests 0}}' "$PORTAINER_AGENT_IMAGE" | cut -d'@' -f2)
+    current_digest=$(docker inspect --format='json' "$PORTAINER_AGENT_IMAGE" | jq -r '.[0].Image')
+    if !validateSHA(current_digest); then
+        echo -e "\n- Invalid SHA for current image $PORTAINER_AGENT_IMAGE -"
+        return false
+    fi
     echo -e "\n- Current version: $current_digest -"
     latest_digest=$(curl -s https://hub.docker.com/v2/repositories/portainer/agent/tags/latest | jq -r '.images[] | select(.architecture == "arm64") | .digest')
+    if !validateSHA(latest_digest); then
+        echo -e "\n- Invalid SHA for latest image $PORTAINER_AGENT_IMAGE -"
+        return false
+    fi
     echo -e "\n- Latest version: $latest_digest -"
 
     if [ "$current_digest" != "$latest_digest" ]; then
