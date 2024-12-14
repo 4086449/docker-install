@@ -99,10 +99,15 @@ function enableVNC() {
 }
 
 function downloadInstallScript() {
-    # Download install script from github
-    sudo apt install git wget curl -y
-    cd /home/$USERNAME/
-    git clone https://github.com/4086449/docker-install.git
+    # Check if the path exists
+    if [ -d "/home/$USERNAME/docker-install/" ]; then
+        echo "Directory /home/$USERNAME/docker-install/ already exists."
+    else
+        # Download install script from github    
+        sudo apt install git wget curl -y
+        cd /home/$USERNAME/
+        git clone https://github.com/4086449/docker-install.git
+    fi
 }
 
 main
