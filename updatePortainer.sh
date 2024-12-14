@@ -44,10 +44,10 @@ function checkForPortainer() {
     ### Check if portainer is running
     if [ "$(docker ps -a -q -f name=portainer)" ]; then
         echo -e "\n- Found portainer -"
-        return true
+        return 0
     else
         echo -e "\n- Portainer is not found! -"
-        return false
+        return 1
     fi
 }
 
@@ -55,21 +55,21 @@ function checkForPortainerAgent() {
     ### Check if portainer_agent is running
     if [ "$(docker ps -a -q -f name=portainer_agent)" ]; then
         echo -e "\n- Found portainer_agent -"
-        return true
+        return 0
     else
         echo -e "\n- Portainer Agent is not found! -"
-        return false
+        return 1
     fi
 }
 
 function validateSHA() {
     if [ -z "$1" ]; then
-        return false
+        return 1
     fi
     if [[ "$1" =~ ^sha256:[a-f0-9]{64}$ ]]; then
-        return true
+        return 0
     else
-        return false
+        return 1
     fi
 }
 
@@ -78,23 +78,23 @@ function pullPortainerImage() {
     current_digest=$(docker inspect --format='json' "$PORTAINER_IMAGE" | jq -r '.[0].Image' | cut -d':' -f2)
     if ! validateSHA "$current_digest"; then
         echo -e "\n- Invalid SHA for current image $PORTAINER_AGENT_IMAGE -"
-        return false
+        return 1
     fi
     echo -e "\n- Current version: $current_digest -"
     latest_digest=$(curl -s https://hub.docker.com/v2/repositories/portainer/portainer-ce/tags/latest | jq -r '.images[] | select(.architecture == "arm64") | .digest')
     if ! validateSHA "$latest_digest"; then
         echo -e "\n- Invalid SHA for latest image $PORTAINER_AGENT_IMAGE -"
-        return false
+        return 1
     fi
     echo -e "\n- Latest version: $latest_digest -"
 
     if [ "$current_digest" != "$latest_digest" ]; then
         echo -e "\n- New image available, pulling new Portainer image -"
         docker pull "$PORTAINER_IMAGE"
-        return true
+        return 0
     else
         echo -e "\n- No new image available for $PORTAINER_IMAGE -"
-        return false
+        return 1
     fi
 }
 
@@ -103,23 +103,23 @@ function pullPortainerAgentImage() {
     current_digest=$(docker inspect --format='json' "$PORTAINER_AGENT_IMAGE" | jq -r '.[0].Image')
     if ! validateSHA "$current_digest"; then
         echo -e "\n- Invalid SHA for current image $PORTAINER_AGENT_IMAGE -"
-        return false
+        return 1
     fi
     echo -e "\n- Current version: $current_digest -"
     latest_digest=$(curl -s https://hub.docker.com/v2/repositories/portainer/agent/tags/latest | jq -r '.images[] | select(.architecture == "arm64") | .digest')
     if ! validateSHA "$latest_digest"; then
         echo -e "\n- Invalid SHA for latest image $PORTAINER_AGENT_IMAGE -"
-        return false
+        return 1
     fi
     echo -e "\n- Latest version: $latest_digest -"
 
     if [ "$current_digest" != "$latest_digest" ]; then
         echo -e "\n- New image available, pulling new Portainer image -"
         docker pull "$PORTAINER_AGENT_IMAGE"
-        return true
+        return 0
     else
         echo -e "\n- No new image available for $PORTAINER_AGENT_IMAGE -"
-        return false
+        return 1
     fi
 }
 
