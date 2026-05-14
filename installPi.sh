@@ -14,25 +14,25 @@ function main() {
     echo -e "  Username:     $USERNAME\n"
     loadEnv
 
-    echo -e "\n[Pi 1/5] Setting locale..."
+    echo -e "\n[Pi 1/4] Setting locale..."
     setLocale
-    echo -e "[Pi 1/5] Done.\n"
+    echo -e "[Pi 1/4] Done.\n"
 
-    echo -e "[Pi 2/5] Updating .bashrc aliases..."
+    echo -e "[Pi 2/4] Updating .bashrc aliases..."
     updateBashrc
-    echo -e "[Pi 2/5] Done.\n"
+    echo -e "[Pi 2/4] Done.\n"
 
-    echo -e "[Pi 3/5] Upgrading system packages (this may take several minutes)..."
+    echo -e "[Pi 3/4] Upgrading system packages (this may take several minutes)..."
     pi-upgrade
-    echo -e "[Pi 3/5] Done.\n"
+    echo -e "[Pi 3/4] Done.\n"
 
-    echo -e "[Pi 4/5] Enabling VNC..."
+    echo -e "[Pi 4/4] Enabling VNC..."
     enableVNC
-    echo -e "[Pi 4/5] Done.\n"
+    echo -e "[Pi 4/4] Done.\n"
 
-    echo -e "[Pi 5/5] Cloning install repo..."
-    downloadInstallScript
-    echo -e "[Pi 5/5] Done.\n"
+    # echo -e "[Pi 5/5] Cloning install repo..."
+    # downloadInstallScript
+    # echo -e "[Pi 5/5] Done.\n"
 
     echo -e '\n  Pi configuration complete.\n'
     exit 0
