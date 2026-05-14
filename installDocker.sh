@@ -65,7 +65,7 @@ function pi-upgrade() {
 }
 
 function installDeps() {
-    sudo apt install ca-certificates curl gnupg software-properties-common -y
+    sudo apt install ca-certificates curl gnupg -y
 }
 
 function installDockerEngine() {

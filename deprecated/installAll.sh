@@ -70,7 +70,7 @@ downloadInstallScript() {
 
 installDocker() { 
     echo "Install dependencies"
-    sudo apt install apt-transport-https ca-certificates curl gnupg-agent software-properties-common -y
+    sudo apt install apt-transport-https ca-certificates curl gnupg-agent -y
 
     echo "Download script from 'https://get.docker.com' for adding the docker repo's and keys and stuff"
     curl -sSL https://get.docker.com | sh
