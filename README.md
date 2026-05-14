@@ -1,29 +1,47 @@
-# docker-repo
-This repo contains an install script for docker and for portainer. 
-It also contains the folders and docker-compose.yml files for wireguard VPN and node-red + mosquitto mqtt
+# docker-install
+This repo contains install and update scripts for docker and for docker compose + portainer.
 
-### Download repo
+# Installation
+One script to rule(read: install) them all!
+
+__OR__
+
+Manually install docker and/or docker compose + portainer
+
+## Download repo
 ```bash
-sudo apt-get install -y git
+sudo apt install -y git
 cd ~/
-git clone https://github.com/4086449/docker.git
+git clone https://github.com/4086449/docker-install.git
+cd docker-install/
 ```
 
-# Docker install scripts
-This repo contains an install script for docker and for portainer. 
+## Create .env file
+Create a new file called .env
+Paste the following lines and edit if needed. (i.e. you have to create a new Personal Access Token if you want use the "updateContainers.sh" script)
+> [How-to create portainer access token](https://docs.portainer.io/api/access)
 
-## Installation
-
-### Make install scripts executable
+### Example .env
 ```bash
-cd ~/docker-install/
+DOCKER_IMAGE="portainer/portainer-ce:latest"
+PORTAINER_FOLDER="/home/pi/portainer"
+PORTAINER_USER="admin"
+PORTAINER_PASS="Youwillneverguessthispass!"
+PORTAINER_PAT="123aNewPATForMe_456EatABagOfD!x="
+PORTAINER_URL="https://localhost:9000"
+PORTAINER_API_KEY="ptr_your_access_token_here"
+PORTAINER_ENDPOINT_ID="1"
 ```
-> ~~sudo chmod +x installDocker.sh~~
 
-> ~~sudo chmod +x installPortainer.sh~~
+## Install with All-in-One script
+__docker + docker compose + portainer__
+```bash
+./install.sh
+```
 
+## Install manually
 ### Install Docker
-When asked, press 'y' 
+> When asked, press 'y' 
 
 _ignore warnings during install. All will be well after a reboot. This happens automatically at the end of the installDocker.sh script_
 
@@ -40,7 +58,7 @@ _ignore warnings during install. All will be well after a reboot. This happens a
 ./installPortainer.sh
 ```
 
-### Post-installation
+## Post-installation
 You can now deploy containers with docker, docker-compose or portainer.
 Portainer is available @ 'http://<ip_address_pi>:9000/'
 
@@ -54,7 +72,41 @@ Press local to enter the environment and start deploying containers.
                                                     
 ![PortainerHome](./lib/PortainerHome.png)
 
+## Updating Containers
+The `updateContainers.sh` script automatically updates all running containers managed by Portainer:
+
+1. Pulls the latest image for every running container
+2. Redeploys stacks with updated images via the Portainer API
+3. Stops and removes standalone containers that have updates (redeploy from Portainer UI)
+4. Cleans up unused/dangling images
+
+### Prerequisites
+- A Portainer API access token ([How to create one](https://docs.portainer.io/api/access))
+- `jq` is recommended (for reliable JSON parsing) but not required
+- The `.env` file should contain `PORTAINER_URL`, `PORTAINER_API_KEY`, and `PORTAINER_ENDPOINT_ID`
+
+### Usage
+```bash
+# Source env vars and run
+export PORTAINER_API_KEY="ptr_your_token_here"
+export PORTAINER_URL="https://localhost:9000"
+./updateContainers.sh
+```
+
+Or if using the `.env` file:
+```bash
+source .env
+./updateContainers.sh
+```
+
 ## Static IP
+### [DEPRECATED]
+___since debian version bookworm___
+
+---
+
+### How To set static IP
+
 Just a reminder to set a static ip
 
 _edit file_
