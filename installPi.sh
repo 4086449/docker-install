@@ -1,21 +1,40 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 
-USERNAME=pi
+USERNAME="${USERNAME:-$USER}"
 LOGFOLDER=./logs
 LOGFILE=./$LOGFOLDER/installPi.log
 
 function main() {
     ### Start script
-    echo -e '\n-----------------------\n'
-    echo -e '\n- Starting script to config pi -'
-    echo -e "\n- Current user: $USER -"
+    echo -e '\n=========================================='
+    echo -e '  CONFIGURE RASPBERRY PI'
+    echo -e '  Steps: locale -> aliases -> upgrade -> VNC -> git clone'
+    echo -e '==========================================\n'
+    echo -e "  Current user: $USER"
+    echo -e "  Username:     $USERNAME\n"
     loadEnv
+
+    echo -e "\n[Pi 1/5] Setting locale..."
     setLocale
+    echo -e "[Pi 1/5] Done.\n"
+
+    echo -e "[Pi 2/5] Updating .bashrc aliases..."
     updateBashrc
+    echo -e "[Pi 2/5] Done.\n"
+
+    echo -e "[Pi 3/5] Upgrading system packages (this may take several minutes)..."
     pi-upgrade
+    echo -e "[Pi 3/5] Done.\n"
+
+    echo -e "[Pi 4/5] Enabling VNC..."
     enableVNC
+    echo -e "[Pi 4/5] Done.\n"
+
+    echo -e "[Pi 5/5] Cloning install repo..."
     downloadInstallScript
-    echo -e '\n- Done -\n'
+    echo -e "[Pi 5/5] Done.\n"
+
+    echo -e '\n  Pi configuration complete.\n'
     exit 0
 }
 
@@ -38,8 +57,14 @@ function loadEnv() {
 }
 
 function pi-upgrade() {
-    echo -e "\n- pi-upgrade -"
-    sudo apt update && sudo apt full-upgrade -y && sudo apt dist-upgrade -y && sudo apt autoremove -y
+    echo -e "  Running: apt update..."
+    sudo apt update
+    echo -e "  Running: apt full-upgrade (this is the slow part)..."
+    sudo apt full-upgrade -y
+    echo -e "  Running: apt dist-upgrade..."
+    sudo apt dist-upgrade -y
+    echo -e "  Running: apt autoremove..."
+    sudo apt autoremove -y
 }
 
 function setLocale() {
@@ -84,8 +109,13 @@ function setLocale() {
 function updateBashrc() {
     echo -e "\n- Setting aliases -"
     touch /home/$USERNAME/.bashrc
-    echo -e "\n\n\n\n\n##############" >> /home/$USERNAME/.bashrc
+    if grep -q "# docker-install managed block" /home/$USERNAME/.bashrc; then
+        echo -e "\n- Aliases already present, skipping -"
+        return 0
+    fi
+    echo -e "\n\n##############" >> /home/$USERNAME/.bashrc
     echo -e "#   Custom   #" >> /home/$USERNAME/.bashrc
+    echo -e "# docker-install managed block" >> /home/$USERNAME/.bashrc
     echo -e "##############\n" >> /home/$USERNAME/.bashrc
     echo "alias pi-update=\"sudo apt update\"" >> /home/$USERNAME/.bashrc
     echo "alias pi-upgrade=\"sudo apt update && sudo apt full-upgrade -y && sudo apt dist-upgrade -y && sudo apt autoremove -y\"" >> /home/$USERNAME/.bashrc
@@ -99,15 +129,10 @@ function enableVNC() {
 }
 
 function downloadInstallScript() {
-    # Check if the path exists
-    if [ -d "/home/$USERNAME/docker-install/" ]; then
-        echo "Directory /home/$USERNAME/docker-install/ already exists."
-    else
-        # Download install script from github    
-        sudo apt install git wget curl -y
-        cd /home/$USERNAME/
-        git clone https://github.com/4086449/docker-install.git
-    fi
+    # Download install script from github
+    sudo apt install git wget curl -y
+    cd /home/$USERNAME/
+    git clone https://github.com/4086449/docker-install.git
 }
 
 main
