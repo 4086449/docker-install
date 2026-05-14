@@ -84,12 +84,11 @@ function setLocale() {
     # uncomment the wanted locale
     # @note this uncomment en_US.UTF-8
     sudo sed -i 's/^# en_US.UTF-8/en_US.UTF-8/' /etc/locale.gen
-    sudo localectl list-locales
     # generate locales
     # The uncommented locales in /etc/locale.gen will be generated
     sudo locale-gen
     # sudo locale-gen en_US.UTF-8
-    sudo localectl set-locale LANG=en_US.UTF-8
+    sudo update-locale LANG=en_US.UTF-8
     # sudo update-locale LANG=en_US.UTF-8
     # sudo update-locale LC_ALL=en_US.UTF-8
     # sudo update-locale LANGUAGE=en_US.UTF-8
