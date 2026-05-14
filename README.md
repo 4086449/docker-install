@@ -28,6 +28,9 @@ PORTAINER_FOLDER="/home/pi/portainer"
 PORTAINER_USER="admin"
 PORTAINER_PASS="Youwillneverguessthispass!"
 PORTAINER_PAT="123aNewPATForMe_456EatABagOfD!x="
+PORTAINER_URL="https://localhost:9000"
+PORTAINER_API_KEY="ptr_your_access_token_here"
+PORTAINER_ENDPOINT_ID="1"
 ```
 
 ## Install with All-in-One script
@@ -68,6 +71,33 @@ Once done, you're in the home screen.
 Press local to enter the environment and start deploying containers.
                                                     
 ![PortainerHome](./lib/PortainerHome.png)
+
+## Updating Containers
+The `updateContainers.sh` script automatically updates all running containers managed by Portainer:
+
+1. Pulls the latest image for every running container
+2. Redeploys stacks with updated images via the Portainer API
+3. Stops and removes standalone containers that have updates (redeploy from Portainer UI)
+4. Cleans up unused/dangling images
+
+### Prerequisites
+- A Portainer API access token ([How to create one](https://docs.portainer.io/api/access))
+- `jq` is recommended (for reliable JSON parsing) but not required
+- The `.env` file should contain `PORTAINER_URL`, `PORTAINER_API_KEY`, and `PORTAINER_ENDPOINT_ID`
+
+### Usage
+```bash
+# Source env vars and run
+export PORTAINER_API_KEY="ptr_your_token_here"
+export PORTAINER_URL="https://localhost:9000"
+./updateContainers.sh
+```
+
+Or if using the `.env` file:
+```bash
+source .env
+./updateContainers.sh
+```
 
 ## Static IP
 ### [DEPRECATED]

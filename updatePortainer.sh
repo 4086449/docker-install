@@ -23,7 +23,7 @@ pullPortainerImage() {
 
     ### Check if the pull output contains "Status: Downloaded newer image"
 	if grep -q "Status: Downloaded newer image" <<< "$pull_output"; then
-        return true
+        return 0
     else
         echo '- No new image available -'
         echo 'Exiting Script'
@@ -32,34 +32,36 @@ pullPortainerImage() {
 }
 
 deployNewImage() {
-    echo 'Stopping container'
+    echo -e '  Stopping container...'
     docker stop portainer
-    echo 'Removing container'
+    echo -e '  Removing old container...'
     docker rm portainer
-    echo 'Spinning up container'
-    # docker run -d -p 8000:8000 -p 9000:9000 -p 9443:9443 --name=portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce:latest
+    echo -e '  Starting new container with updated image...'
     docker run -d -p 8000:8000 -p 9000:9000 -p 9443:9443 --name=portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v $PORTAINER_FOLDER/data:/data $DOCKER_IMAGE
+    echo -e '  New container is running.'
 }
 
 
 ### Start script
-echo '- Starting script to update portainer -'
+echo -e '\n=========================================='
+echo -e '  UPDATE PORTAINER'
+echo -e '  Steps: upgrade -> check -> pull -> redeploy'
+echo -e '==========================================\n'
 
-### uncomment to update pi
-# echo '- Start update -'
-# sudo apt update
-
-### or upgrade
-echo 'Start upgrade'
+echo -e "[1/4] Upgrading system packages..."
 sudo apt update && sudo apt upgrade -y
+echo -e "[1/4] Done.\n"
 
-echo 'Check if portainer is running'
+echo -e "[2/4] Checking if Portainer is running..."
 checkForPortainer
+echo -e "[2/4] Done.\n"
 
-echo 'Pulling new image'
+echo -e "[3/4] Pulling new image: $DOCKER_IMAGE ..."
 pullPortainerImage
+echo -e "[3/4] Done.\n"
 
-echo 'Deploying new image'
+echo -e "[4/4] Deploying new image..."
 deployNewImage
+echo -e "[4/4] Done.\n"
 
-echo '- Done -'
+echo -e '\n  Portainer update complete.\n'
